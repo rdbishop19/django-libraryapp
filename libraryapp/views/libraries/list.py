@@ -1,11 +1,11 @@
 import sqlite3
 from django.shortcuts import render
-from libraryapp.models import Library
+from libraryapp.models import Library, model_factory
 from .. connection import Connection
 
 def library_list(request):
     with sqlite3.connect(Connection.db_path) as conn:
-        conn.row_factory = sqlite3.Row
+        conn.row_factory = model_factory(Library)
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
@@ -16,15 +16,7 @@ def library_list(request):
             FROM libraryapp_library l
         """)
 
-        all_libraries = []
-        dataset = db_cursor.fetchall()
-        for row in dataset:
-            lib = Library()
-            # assign properties here
-            lib.title = row['title']
-            lib.address = row['address']
-
-            all_libraries.append(lib)
+        all_libraries = db_cursor.fetchall()
 
     template = 'libraries/list.html'
     context = {
