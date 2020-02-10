@@ -12,10 +12,17 @@
 
     <div>Published in {{ book.year_published }}</div>
     <div>ISBN: {{ book.isbn }}</div>
-    <form action="{% url 'libraryapp:book' book.id %}" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="actual_method" value="DELETE">
-        <button>Delete</button>
-    </form>
+    <section id="book-actions" style="display:flex;">
+        <form action="{% url 'libraryapp:book' book.id %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="actual_method" value="DELETE">
+            <button>Delete</button>
+        </form>
+
+        <form action="{% url 'libraryapp:book_edit_form' book.id %}" method="get">
+            {% csrf_token %}
+            <button>Edit</button>
+        </form>
+    </section>
 </body>
 </html>
