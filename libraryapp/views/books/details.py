@@ -1,5 +1,5 @@
 import sqlite3
-from django.shortcuts import render
+from django.shortcuts import render, reverse, redirect
 from django.contrib.auth.decorators import login_required
 from libraryapp.models import Book
 from libraryapp.models import model_factory
@@ -36,3 +36,21 @@ def book_details(request, book_id):
         }
 
         return render(request, template, context)
+
+    if request.method == 'POST':
+        form_data = request.POST
+
+        # check if this POST is for deleting a book
+        # parentheses to break up complex `if` statements for readability
+        if (
+            "actual_method" in form_data and form_data["actual_method"] == "DELETE"
+        ):
+            with sqlite3.connect(Connection.db_path) as conn:
+                db_cursor = conn.cursor()
+
+                db_cursor.execute("""
+                    DELETE FROM libraryapp_book
+                    WHERE id = ?
+                """, (book_id,))
+
+            return redirect(reverse('libraryapp:books'))
