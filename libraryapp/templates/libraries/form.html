@@ -1,12 +1,6 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bangazon</title>
-</head>
-<body>
+{% extends 'shared/base.html' %}
+
+{% block content %}
     <h1>New Library</h1>
 
     <form action="{% url 'libraryapp:libraries' %}" method="post">
@@ -22,5 +16,5 @@
 
         <input type="submit" value="Add Library">
     </form>
-</body>
-</html>
+
+{% endblock %}
