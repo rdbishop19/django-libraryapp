@@ -3,9 +3,20 @@
 {% block content %}
   <h1>Libraries</h1>
 
+  <a href="{% url 'libraryapp:library_form' %}">Add Library</a>
+
   <ol>
   {% for library in all_libraries %}
-    <li><a href="{% url 'libraryapp:library' library.id %}">{{ library.title }}</a> ({{ library.address}})</li>
+    <li>
+      <a href="{% url 'libraryapp:library' library.id %}">{{ library.title }}</a> ({{ library.address}})
+      <ul>
+        
+        {% for book in library.books %}
+        <li>{{ book.title }}</li>
+        {% endfor %}
+        
+      </ul>
+    </li>
   {% endfor %}
   </ol>
 {% endblock %}
